@@ -20,7 +20,6 @@ class mandala : public ofBaseApp{
   void createRing();
   void drawRing();
   void newMandala();
-  void shape(int poly, int rep, int rad, int ang, int lvl);
 
   float height, width;
   int numRings;

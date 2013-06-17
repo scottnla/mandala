@@ -104,29 +104,3 @@ void mandala::gotMessage(ofMessage msg){
 void mandala::dragEvent(ofDragInfo dragInfo){ 
 
 }
-
-//--------------------------------------------------------------
-void mandala::shape(int sides, int rep, int polyRad, int sidesPoly, int lvl){
-  if(lvl > 0 || polyRad > width * 0.48) {
-    for(int i = 0; i < sidesPoly; i++) {
-      ofPushMatrix();
-      ofTranslate(width/2, height/2);
-      ofRotateZ(ofRadToDeg(TWO_PI/sidesPoly*i));
-      ofPushMatrix();
-      ofTranslate(0, rep);
-      ofBeginShape();
-      for(int j = 0; j < sides; j++) {
-	ofVertex(polyRad*cos(TWO_PI/sides*j), polyRad*sin(TWO_PI/sides*j));
-      }
-      ofVertex(polyRad, 0);
-      ofEndShape();
-      ofPopMatrix();
-      ofPopMatrix();
-    }
-    rep *= ofRandom(1.0, 3.0);
-    polyRad *= ofRandom(0.5, 1.5);
-    sidesPoly *= ofRandom(0.8, 1.2);
-    lvl--;
-    shape(sides, rep, polyRad, sidesPoly, lvl);
-  }
-}
