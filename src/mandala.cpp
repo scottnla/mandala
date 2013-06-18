@@ -9,22 +9,13 @@ void mandala::setup(){
   width = ofGetWidth();
   height = ofGetHeight();
   //create mandala parameters
-  numRings = int(ofRandom(6,12));
-  ringRadius = int(ofRandom(25, 75));
-  for(int i = 0; i < numRings; i++) {
-    MandalaRing ring;
-    int numPolygons = int(ofRandom(6,12));
-    int numSides = int(ofRandom(3,8));
-    int polygonRadius = int(ofRandom(3,5))*10;
-    ring.index = i;
-    ring.startAngle = 0;
-    ring.polygonSides = numSides;
-    ring.radius = ringRadius;
-    ring.polygonRad = polygonRadius;
-    ring.itemsPerRing = numPolygons;
-    mandala.push_back(ring);
-    ringRadius *= ofRandom(1.2,1.5);
-  }
+  ringRadius = 350;
+  ring.num = int(ofRandom(6,12));
+  ring.startAngle = 0;
+  ring.beta = ofRandom(1.1,1.4);
+  ring.eta = ofRandom(0.1, 0.9);
+  ring.a = ofRandom(0.2, 0.35);
+  ring.b = ofRandom(0.4, 0.6);
 }
 
 //--------------------------------------------------------------
@@ -36,28 +27,36 @@ void mandala::draw(){
   ofBackground(0,0,0);
   ofSetColor(255,255,255,32);
   ofFill();
-  for(int k = 0; k < numRings; k++) {
-    int items = mandala[k].itemsPerRing;
-    int ringRad = mandala[k].radius;
-    int sides = mandala[k].polygonSides;
-    int polyRad = mandala[k].polygonRad;
-    for(int i = 0; i < items; i++) {
-      ofPushMatrix();
-      ofTranslate(width/2, height/2);
-      ofRotateZ(ofRadToDeg(TWO_PI/items*i) + mandala[k].startAngle);
-      ofPushMatrix();
-      ofTranslate(0, ringRad);
-      ofBeginShape();
-      for(int j = 0; j < sides; j++) {
-	ofVertex(polyRad*cos(TWO_PI/sides*j), polyRad*sin(TWO_PI/sides*j));
-      }
-      ofVertex(polyRad, 0);
-      ofEndShape();
-      ofPopMatrix();
-      ofPopMatrix();
-      mandala[k].startAngle += pow(-1, mandala[k].index)*0.1;
-    }
+  ofTranslate(width/2, height/2);
+  for(int i = 0; i < ring.num; i++) {
+    ofPushMatrix();
+    ofRotateZ(ofRadToDeg(TWO_PI/ring.num*i + ring.startAngle));
+    ofBeginShape();
+    ofCurveVertex(0,0);
+    ofCurveVertex(0,0);
+    ofCurveVertex(ringRadius*ring.b, ringRadius*ring.a*(1+ring.eta));
+    ofCurveVertex(ringRadius*ring.beta,0);
+    ofCurveVertex(ringRadius*ring.b, ringRadius*ring.a*(1-ring.eta));
+    ofCurveVertex(0,0);
+    ofCurveVertex(0,0);
+    ofEndShape();
+    ofPopMatrix();
+
+    ofPushMatrix();
+    ofScale(-1,1);
+    ofRotateZ(ofRadToDeg(TWO_PI/ring.num*i + ring.startAngle));
+    ofBeginShape();
+    ofCurveVertex(0,0);
+    ofCurveVertex(0,0);
+    ofCurveVertex(ringRadius*ring.b, ringRadius*ring.a*(1-ring.eta));
+    ofCurveVertex(ringRadius*ring.beta,0);
+    ofCurveVertex(ringRadius*ring.b, ringRadius*ring.a*(1+ring.eta));
+    ofCurveVertex(0,0);
+    ofCurveVertex(0,0);
+    ofEndShape();
+    ofPopMatrix();
   }
+  ring.startAngle += 0.01;
 }
 
 //--------------------------------------------------------------

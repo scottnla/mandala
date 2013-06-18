@@ -22,17 +22,17 @@ class mandala : public ofBaseApp{
   void newMandala();
 
   float height, width;
-  int numRings;
   int ringRadius;
 
-  struct MandalaRing {
+  struct CurvedRing {
     int index;
     float startAngle;
-    int polygonSides;
-    int radius;
-    int polygonRad;
-    int itemsPerRing;
+    int num;
+    float beta;
+    float eta;
+    float a;
+    float b;
   };
   
-  vector<MandalaRing> mandala;
+  struct CurvedRing ring;
 };
