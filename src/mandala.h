@@ -24,6 +24,7 @@ class mandala : public ofBaseApp{
   float height, width;
   int numRings;
   int ringRadius;
+  int numPolygons;
 
   struct MandalaRing {
     int index;

@@ -5,25 +5,26 @@ void mandala::setup(){
   ofBackground(0,0,0);
   ofEnableSmoothing();
   ofEnableAlphaBlending();
-  ofSetFrameRate(30);
+  //ofSetFrameRate(30);
   width = ofGetWidth();
   height = ofGetHeight();
   //create mandala parameters
-  numRings = int(ofRandom(6,12));
-  ringRadius = int(ofRandom(25, 75));
+  numRings = int(ofRandom(36,48));
+  ringRadius = int(ofRandom(25,75));
+  numPolygons = int(ofRandom(24,128));
   for(int i = 0; i < numRings; i++) {
     MandalaRing ring;
-    int numPolygons = int(ofRandom(6,12));
     int numSides = int(ofRandom(3,8));
-    int polygonRadius = int(ofRandom(3,5))*10;
+    int polygonRadius = int(ofRandom(5,15));
     ring.index = i;
-    ring.startAngle = 0;
+    ring.startAngle = ofRandom(0, TWO_PI);
     ring.polygonSides = numSides;
     ring.radius = ringRadius;
     ring.polygonRad = polygonRadius;
     ring.itemsPerRing = numPolygons;
     mandala.push_back(ring);
-    ringRadius *= ofRandom(1.2,1.5);
+    ringRadius *= ofRandom(1.1, 1.2);
+    numPolygons *= int(ofRandom(1.2,1.5));
   }
 }
 
@@ -55,9 +56,10 @@ void mandala::draw(){
       ofEndShape();
       ofPopMatrix();
       ofPopMatrix();
-      mandala[k].startAngle += pow(-1, mandala[k].index)*0.1;
+      mandala[k].startAngle += pow(-1, mandala[k].index)*0.01;
     }
   }
+  ofLog() << "Frame Rate: " << ofGetFrameRate();
 }
 
 //--------------------------------------------------------------
